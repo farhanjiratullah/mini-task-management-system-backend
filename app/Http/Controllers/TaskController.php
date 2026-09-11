@@ -7,9 +7,9 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Support\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
@@ -17,7 +17,7 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request): JsonResponse
     {
         $request->validate([
             'status' => ['sometimes', Rule::in(['all', TaskStatus::Pending->value, TaskStatus::Completed->value])],
@@ -30,44 +30,61 @@ class TaskController extends Controller
             ->latest()
             ->paginate();
 
-        return TaskResource::collection($tasks);
+        return TaskResource::collection($tasks)
+            ->additional([
+                'success' => true,
+                'message' => 'Tasks retrieved successfully.',
+            ])
+            ->response();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskRequest $request): TaskResource
+    public function store(StoreTaskRequest $request): JsonResponse
     {
         $task = Task::create($request->validated());
 
-        return TaskResource::make($task);
+        return ApiResponse::success(
+            TaskResource::make($task),
+            'Task created successfully.',
+            201,
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Task $task): TaskResource
+    public function show(Task $task): JsonResponse
     {
-        return TaskResource::make($task);
+        return ApiResponse::success(
+            TaskResource::make($task),
+            'Task retrieved successfully.',
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Task $task): TaskResource
+    public function update(UpdateTaskRequest $request, Task $task): JsonResponse
     {
         $task->update($request->validated());
 
-        return TaskResource::make($task);
+        return ApiResponse::success(
+            TaskResource::make($task),
+            'Task updated successfully.',
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task): Response
+    public function destroy(Task $task): JsonResponse
     {
         $task->delete();
 
-        return response()->noContent();
+        return ApiResponse::success(
+            message: 'Task deleted successfully.',
+        );
     }
 }
