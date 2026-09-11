@@ -28,7 +28,7 @@ class TaskController extends Controller
         $tasks = Task::query()
             ->when($status !== 'all', fn($query) => $query->where('status', $status))
             ->latest()
-            ->paginate(12);
+            ->paginate();
 
         return TaskResource::collection($tasks);
     }
