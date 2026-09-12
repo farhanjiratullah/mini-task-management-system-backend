@@ -21,14 +21,18 @@ class TaskController extends Controller
     {
         $request->validate([
             'status' => ['sometimes', Rule::in(['all', TaskStatus::Pending->value, TaskStatus::Completed->value])],
+            'search' => ['sometimes', 'string', 'max:255'],
         ]);
 
         $status = $request->query('status', 'all');
+        $search = $request->query('search');
 
         $tasks = Task::query()
-            ->when($status !== 'all', fn($query) => $query->where('status', $status))
+            ->when($status !== 'all', fn ($query) => $query->where('status', $status))
+            ->when($search, fn ($query) => $query->where('title', 'like', '%'.$search.'%'))
             ->latest()
-            ->paginate();
+            ->paginate()
+            ->withQueryString();
 
         return TaskResource::collection($tasks)
             ->additional([
