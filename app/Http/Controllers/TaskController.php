@@ -28,10 +28,10 @@ class TaskController extends Controller
         $search = $request->query('search');
 
         $tasks = Task::query()
-            ->when($status !== 'all', fn ($query) => $query->where('status', $status))
-            ->when($search, fn ($query) => $query->where('title', 'like', '%'.$search.'%'))
+            ->when($status !== 'all', fn($query) => $query->where('status', $status))
+            ->when($search, fn($query) => $query->where('title', 'like', '%' . $search . '%'))
             ->latest()
-            ->paginate()
+            ->paginate(10)
             ->withQueryString();
 
         return TaskResource::collection($tasks)
