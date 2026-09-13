@@ -20,7 +20,10 @@ class TaskFactory extends Factory
     {
         return [
             'title' => fake()->sentence(4),
-            'status' => TaskStatus::Pending,
+            'status' => fake()->randomElement([
+                TaskStatus::Pending,
+                TaskStatus::Completed,
+            ]),
         ];
     }
 
@@ -29,7 +32,7 @@ class TaskFactory extends Factory
      */
     public function completed(): static
     {
-        return $this->state(fn (array $attributes): array => [
+        return $this->state(fn(array $attributes): array => [
             'status' => TaskStatus::Completed,
         ]);
     }

@@ -2,21 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use Database\Factories\TaskFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class TaskSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
-        $this->call([
-            TaskSeeder::class,
-        ]);
+        TaskFactory::new()
+            ->count(50)
+            ->create();
     }
 }
