@@ -1,57 +1,111 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Technical Practice - Indonesian Cloud
 
-## About Laravel
+A Laravel 13 REST API project featuring a Task resource (CRUD, search, and pagination) with an API response formatter.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Before installing, make sure the following are available on your machine:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 8.3 with the extensions Laravel requires (mbstring, openssl, pdo, tokenizer, xml, ctype, json, bcmath)
+- Composer 2.x
+- Node.js and npm
+- Git
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Follow these steps in order.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clone the repository
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+```bash
+git clone <repository-url>
+cd mini-task-management-system-backend
+```
+
+### 2. Install PHP dependencies
+
+```bash
+composer install
+```
+
+### 3. Install JavaScript dependencies
+
+```bash
+npm install
+```
+
+### 4. Create your environment file
+
+```bash
+cp .env.example .env
+```
+
+### 5. Generate the application key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Configure the database
+
+This project uses MySQL. Create a database (e.g. `mini_task_management_system`), then update your `.env` file with your connection details:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=mini_task_management_system
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 7. Run migrations and seed the database
+
+```bash
+php artisan migrate --seed
+```
+
+This creates the required tables and seeds sample tasks via `TaskSeeder`.
+
+### 8. Build frontend assets
+
+```bash
+npm run build
+```
+
+For active development with hot reloading, use `npm run dev` instead.
+
+### 9. Start the application
+
+```bash
+composer run dev
+```
+
+This runs the Laravel server, queue listener, log watcher, and Vite dev server together. Alternatively, run just the server with:
+
+```bash
+php artisan serve
+```
+
+The API will be available at `http://localhost:8000` (or the URL shown in your terminal).
+
+## API Overview
+
+- `GET /api/tasks` — list tasks (supports search and pagination)
+- `POST /api/tasks` — create a task
+- `GET /api/tasks/{task}` — show a task
+- `PUT/PATCH /api/tasks/{task}` — update a task
+- `DELETE /api/tasks/{task}` — delete a task
 
 ## Agentic Development
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+This project supports AI coding agents via [Laravel Boost](https://laravel.com/docs/ai), already included as a dev dependency. Run:
 
 ```bash
-composer require laravel/boost --dev
-
 php artisan boost:install
 ```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
